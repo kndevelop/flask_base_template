@@ -1,0 +1,2 @@
+# flask_base_template
+Flaskでアプリケーションを作りたい時のベースプロジェクト
