@@ -13,4 +13,8 @@ def create_app():
     from .routes import bp as main_bp
     app.register_blueprint(main_bp)
 
+    # テストや初回起動用：DBテーブルを作成
+    with app.app_context():
+        db.create_all()
+
     return app
