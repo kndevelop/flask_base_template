@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}ユーザー追加{% endblock %}
+{% block content %}
+<h2>ユーザー追加</h2>
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label">名前</label>
+        <input type="text" name="name" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">年齢</label>
+        <input type="number" name="age" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary">追加</button>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">キャンセル</a>
+</form>
+{% endblock %}
