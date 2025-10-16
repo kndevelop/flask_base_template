@@ -3,7 +3,7 @@
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h2>ユーザー一覧</h2>
-    <a href="{{ url_for('add') }}" class="btn btn-success">新規追加</a>
+    <a href="{{ url_for('main.add') }}" class="btn btn-success">新規追加</a>
 </div>
 
 <table class="table table-striped table-hover">
@@ -22,8 +22,8 @@
             <td>{{ user.name }}</td>
             <td>{{ user.age }}</td>
             <td>
-                <a href="{{ url_for('edit', user_id=user.id) }}" class="btn btn-sm btn-primary">編集</a>
-                <form action="{{ url_for('delete', user_id=user.id) }}" method="post" style="display:inline-block;">
+                <a href="{{ url_for('main.edit', user_id=user.id) }}" class="btn btn-sm btn-primary">編集</a>
+                <form action="{{ url_for('main.delete', user_id=user.id) }}" method="post" style="display:inline-block;">
                     <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('削除しますか？');">削除</button>
                 </form>
             </td>
