@@ -25,7 +25,7 @@ jobs:
 
       - name: Run tests
         run: |
-          pytest -v --rootdir=. || exit 1
+          python -m pytest tests -v
 
       - name: Trigger Render Deploy
         env:
