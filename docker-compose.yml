@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    container_name: flask-base-dev
+    ports:
+      - "5000:5000"
+    env_file: .env
+    volumes:
+      - .:/app               # ローカル変更を即時反映（開発用）
+      - ./instance:/app/instance
+    command: flask run --host=0.0.0.0 --port=5000
+    restart: always
+
+  test:
+    build: .
+    container_name: flask-base-test
+    env_file: .env
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: pytest -v
