@@ -59,19 +59,11 @@ jobs:
         with:
           python-version: "3.11"
 
-      # 3. Render CLI インストール
-      - name: Install Render CLI
-        run: |
-          curl -L https://cli.render.com/install.sh | sh
-
-      # 4. デプロイ
+      # 3. デプロイ
       - name: Deploy to Render
         env:
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
         run: |
-          # ブランチによってサービスを切り替える
-          if [ "${GITHUB_REF}" = "refs/heads/main" ]; then
-            render deploy --service-id ${{ secrets.RENDER_SERVICE_ID }} --branch main
-          else
-            render deploy --service-id ${{ secrets.RENDER_STAGING_SERVICE_ID }} --branch develop
-          fi
+          curl -X POST "https://api.render.com/v1/services/$RENDER_SERVICE_ID/deploys" \
+            -H "Accept: application/json" \
+            -H "Authorization: Bearer $RENDER_TOKEN"
