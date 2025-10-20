@@ -2,8 +2,9 @@
 FROM python:3.11-slim
 
 # 環境変数
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+ENV FLASK_APP=run.py
+ENV FLASK_ENV=development
+ENV PYTHONPATH=/app
 
 # 作業ディレクトリ
 WORKDIR /app
@@ -22,4 +23,4 @@ EXPOSE 5000
 # RUN flask db upgrade
 
 # 起動コマンド（Renderと同じ）
-CMD ["gunicorn", "run:app", "--bind", "0.0.0.0:5000"]
+CMD ["flask", "run", "--host=0.0.0.0"]
