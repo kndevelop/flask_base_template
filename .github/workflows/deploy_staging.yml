@@ -68,9 +68,4 @@ jobs:
         env:
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
         run: |
-          # ブランチによってサービスを切り替える
-          if [ "${GITHUB_REF}" = "refs/heads/main" ]; then
-            render deploy --service-id ${{ secrets.RENDER_SERVICE_ID }} --branch main
-          else
             render deploy --service-id ${{ secrets.RENDER_STAGING_SERVICE_ID }} --branch develop
-          fi
