@@ -55,11 +55,10 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+      - name: Install Render CLI
+        run: curl -L https://cli.render.com/install.sh | sh
 
-      - name: Deploy to Render
-        uses: render-examples/deploy@v1
-        with:
-          api-key: ${{ secrets.RENDER_API_KEY }}
-          service-id: ${{ github.ref == 'refs/heads/main' && secrets.RENDER_SERVICE_ID || secrets.RENDER_STAGING_SERVICE_ID }}
+      - name: Deploy
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+        run: render deploy --service-id ${{ secrets.RENDER_SERVICE_ID }}
