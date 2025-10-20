@@ -23,18 +23,22 @@ jobs:
           --health-retries 5
 
     steps:
+      # 1. リポジトリチェックアウト
       - uses: actions/checkout@v3
 
+      # 2. Python セットアップ
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
 
+      # 3. 依存関係インストール
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      # 4. PYTHONPATH 設定 & pytest 実行
       - name: Run tests
         run: |
           export PYTHONPATH=$PYTHONPATH:$(pwd)
@@ -45,17 +49,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. リポジトリチェックアウト
       - uses: actions/checkout@v3
 
+      # 2. Python セットアップ
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
 
+      # 3. Render CLI インストール
       - name: Install Render CLI
-        run: curl -L https://cli.render.com/install.sh | sh
+        run: |
+          curl -L https://cli.render.com/install.sh | sh
 
-      - name: Deploy
+      # 4. デプロイ
+      - name: Deploy to Render
         env:
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
-        run: render deploy --service-id ${{ secrets.RENDER_SERVICE_ID }}
+        run: |
+          # ブランチによってサービスを切り替える
+          if [ "${GITHUB_REF}" = "refs/heads/main" ]; then
+            render deploy --service-id ${{ secrets.RENDER_SERVICE_ID }} --branch main
+          else
+            render deploy --service-id ${{ secrets.RENDER_STAGING_SERVICE_ID }} --branch develop
+          fi
