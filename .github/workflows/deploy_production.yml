@@ -1,9 +1,8 @@
-name: CI/CD
+name: Deploy to Production
 
 on:
   push:
-    branches:
-      - dummy
+    branches: [ main ]
 
 jobs:
   test:
@@ -64,6 +63,6 @@ jobs:
         env:
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
         run: |
-          curl -X POST "https://api.render.com/v1/services/$RENDER_SERVICE_ID/deploys" \
-            -H "Accept: application/json" \
-            -H "Authorization: Bearer $RENDER_TOKEN"
+            curl -X POST "https://api.render.com/v1/services/$RENDER_SERVICE_ID/deploys" \
+              -H "Accept: application/json" \
+              -H "Authorization: Bearer $RENDER_TOKEN"

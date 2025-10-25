@@ -2,6 +2,16 @@
 {% block title %}ユーザー一覧{% endblock %}
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-3">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
     <h2>ユーザー一覧</h2>
     <a href="{{ url_for('main.add') }}" class="btn btn-success">新規追加</a>
 </div>
@@ -16,7 +26,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for user in users %}
+        {% for user in users.items %}
         <tr>
             <td>{{ user.id }}</td>
             <td>{{ user.name }}</td>
@@ -31,4 +41,37 @@
         {% endfor %}
     </tbody>
 </table>
+
+<!-- ページネーション部分 -->
+<nav aria-label="ページネーション" class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if users.has_prev %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('main.index', page=users.prev_num) }}">前へ</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">前へ</span></li>
+        {% endif %}
+
+        {% for p in users.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+            {% if p %}
+                {% if p == users.page %}
+                    <li class="page-item active"><span class="page-link">{{ p }}</span></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="{{ url_for('main.index', page=p) }}">{{ p }}</a></li>
+                {% endif %}
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">…</span></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if users.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('main.index', page=users.next_num) }}">次へ</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">次へ</span></li>
+        {% endif %}
+    </ul>
+</nav>
 {% endblock %}
