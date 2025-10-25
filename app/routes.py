@@ -36,37 +36,20 @@ def add():
         db.session.commit()
         flash("ユーザーを追加しました", "success")
         return redirect(url_for("main.index"))
-
-    if form.errors:
-        for field, errors in form.errors.items():
-            for error in errors:
-                flash(error, "danger")
-
-    return render_template("add.html", form=form)
+    return render_template("form.html", form=form)
 
 
 @bp.route("/edit/<int:user_id>", methods=["GET", "POST"])
 def edit(user_id):
     user = User.query.get_or_404(user_id)
-    errors = {}
-    if request.method == "POST":
-        name = request.form.get("name", "").strip()
-        age = request.form.get("age", type=int)
-
-        # バリデーション
-        if not name:
-            errors["name"] = ["名前は必須です"]
-        if age is None or age < 0:
-            errors["age"] = ["年齢は0以上で入力してください"]
-
-        if not errors:
-            user.name = name
-            user.age = age
-            db.session.commit()
-            flash("更新しました", "info")
-            return redirect(url_for("main.index"))
-
-    return render_template("form.html", errors=errors, user=user)
+    form = UserForm(obj=user)
+    if form.validate_on_submit():
+        user.name = form.name.data
+        user.age = form.age.data
+        db.session.commit()
+        flash("更新しました", "info")
+        return redirect(url_for("main.index"))
+    return render_template("edit.html", form=form, user=user)
 
 
 @bp.route("/delete/<int:user_id>", methods=["POST"])

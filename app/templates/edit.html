@@ -1,17 +1,30 @@
 {% extends "base.html" %}
 {% block title %}ユーザー編集{% endblock %}
 {% block content %}
-<h2>ユーザー編集</h2>
-<form method="post">
-    <div class="mb-3">
-        <label class="form-label">名前</label>
-        <input type="text" name="name" value="{{ user.name }}" class="form-control" required>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">年齢</label>
-        <input type="number" name="age" value="{{ user.age }}" class="form-control">
-    </div>
-    <button type="submit" class="btn btn-primary">更新</button>
-    <a href="{{ url_for('main.index') }}" class="btn btn-secondary">キャンセル</a>
-</form>
+<div class="container">
+    <h2>ユーザー編集</h2>
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+            {{ form.name.label(class="form-label") }}
+            {{ form.name(class="form-control") }}
+            {% for error in form.name.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.age.label(class="form-label") }}
+            {{ form.age(class="form-control") }}
+            {% for error in form.age.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        {{ form.submit(class="btn btn-primary", value="更新") }}
+        <a href="{{ url_for('main.index') }}" class="btn btn-secondary">戻る</a>
+    </form>
+</div>
 {% endblock %}
