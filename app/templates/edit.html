@@ -9,7 +9,7 @@
 
         <div class="mb-3">
             {{ form.name.label(class="form-label") }}
-            {{ form.name(class="form-control") }}
+            {{ form.name(class="form-control", maxlength="16", required=True, placeholder="例：田中太郎") }}
             {% for error in form.name.errors %}
                 <div class="text-danger">{{ error }}</div>
             {% endfor %}
@@ -17,7 +17,7 @@
 
         <div class="mb-3">
             {{ form.age.label(class="form-label") }}
-            {{ form.age(class="form-control") }}
+            {{ form.age(class="form-control", type="number", min="0", max="999", required=True, placeholder="例：25") }}
             {% for error in form.age.errors %}
                 <div class="text-danger">{{ error }}</div>
             {% endfor %}
