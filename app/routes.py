@@ -6,24 +6,8 @@ from .models import User
 
 bp = Blueprint("main", __name__)
 
-@bp.route("/", methods=["GET", "POST"])
+@bp.route("/")
 def index():
-    form = UserForm()
-
-    if form.validate_on_submit():
-        name = form.name.data
-        age = form.age.data
-        user = User(name=name, age=age)
-        db.session.add(user)
-        db.session.commit()
-        flash("ユーザーを追加しました", "success")
-        return redirect(url_for("main.index"))
-
-    if form.errors:
-        for field, errors in form.errors.items():
-            for error in errors:
-                flash(error, "danger")
-
     users = User.query.all()
     return render_template("index.html", users=users)
 
