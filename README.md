@@ -38,10 +38,11 @@ Flask + SQLite/PostgreSQL + Docker + Render + GitHub Actions
 ```
 flask-base-template/
 ├── app/
-│ ├── init.py
+│ ├── __init__.py
 │ ├── routes.py
 │ ├── models.py
 │ ├── database.py
+│ ├── forms.py
 │ ├── templates/
 │ │ ├── base.html
 │ │ ├── index.html
